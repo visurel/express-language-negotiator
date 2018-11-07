@@ -1,6 +1,6 @@
 {
   "name": "express-language-negotiator",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Negotiate the language for a request using cookie, query and acceptLanguage, with default fallback.",
   "main": "build/main/index.js",
   "typings": "build/main/index.d.ts",
