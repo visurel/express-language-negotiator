@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 
 export interface LanguageNegotiatorOptions {
-  priority: Array<'cookie' | 'query' | 'acceptLanguage'>
+  priority: Array<'cookie' | 'query' | 'acceptLanguage'>;
   languages: string[];
   defaultLanguage: string;
   cookieName?: string;
@@ -11,12 +11,14 @@ export interface LanguageNegotiatorOptions {
 declare global {
   namespace Express {
     export interface Request {
-      language?: string
+      language?: string;
     }
   }
 }
 
-export function negotiateLanguage(options: LanguageNegotiatorOptions): (req: Request, res: Response, next: NextFunction) => void {
+export function negotiateLanguage(
+  options: LanguageNegotiatorOptions
+): (req: Request, res: Response, next: NextFunction) => void {
   if (options.languages.length === 0) {
     throw new Error('Please provide at least 1 supported language');
   }
@@ -56,15 +58,23 @@ export function negotiateLanguage(options: LanguageNegotiatorOptions): (req: Req
           if (req.headers['accept-language']) {
             const acceptedLanguages = req.acceptsLanguages();
 
-            const directMatch = acceptedLanguages.find(lang => options.languages.findIndex(l => l === lang) > -1);
+            const directMatch = acceptedLanguages.find(
+              lang => options.languages.findIndex(l => l === lang) > -1
+            );
             if (directMatch) {
               match = directMatch;
               break;
             }
 
-            const acceptedLanguagesIndirect = acceptedLanguages.map(lang => lang.substring(0, 2));
-            const languages = options.languages.map(lang => lang.substring(0, 2));
-            const indirectMatch = acceptedLanguagesIndirect.find(lang => languages.findIndex(l => lang === l) > -1);
+            const acceptedLanguagesIndirect = acceptedLanguages.map(lang =>
+              lang.substring(0, 2)
+            );
+            const languages = options.languages.map(lang =>
+              lang.substring(0, 2)
+            );
+            const indirectMatch = acceptedLanguagesIndirect.find(
+              lang => languages.findIndex(l => lang === l) > -1
+            );
 
             if (indirectMatch) {
               match = indirectMatch;
